@@ -4,6 +4,7 @@ import { getForm, selectRoot, Form, saveSubmission, resetSubmissions } from '@fo
 import { CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppConfig } from '../../config';
+import './FormDesigner.scss';
 
 const View = () => {
     const dispatch = useDispatch();
@@ -29,9 +30,7 @@ const View = () => {
         return <CircularProgress />;
     }
 
-
-    return <Form form={form} url={url} onSubmit={onSubmit} submission={submission} />;
-
+    return <Form className="form-designer" form={form} url={url} onSubmit={onSubmit} submission={submission} />;
 };
 
 export default View;
