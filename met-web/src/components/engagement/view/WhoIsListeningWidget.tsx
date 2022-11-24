@@ -6,7 +6,7 @@ import { getContact } from 'services/contactService';
 import { Contact } from 'models/contact';
 import { useAppDispatch } from 'hooks';
 import { openNotification } from 'services/notificationService/notificationSlice';
-
+import { When } from 'react-if';
 interface WhoIsListeningWidgetProps {
     widget: Widget;
 }
@@ -83,18 +83,24 @@ const WhoIsListeningWidget = ({ widget }: WhoIsListeningWidgetProps) => {
                             <Grid item xs={12}>
                                 <MetHeader3 bold>{contact.name}</MetHeader3>
                             </Grid>
-                            <Grid item xs={12}>
-                                <MetBody>{contact.title}</MetBody>
-                            </Grid>
-                            <Grid item xs={12} sx={{ whiteSpace: 'pre-line' }}>
-                                <MetSmallText>{contact.bio}</MetSmallText>
-                            </Grid>
+                            <When condition={contact.title}>
+                                <Grid item xs={12}>
+                                    <MetBody>{contact.title}</MetBody>
+                                </Grid>
+                            </When>
+                            <When condition={contact.bio}>
+                                <Grid item xs={12} sx={{ whiteSpace: 'pre-line' }}>
+                                    <MetSmallText>{contact.bio}</MetSmallText>
+                                </Grid>
+                            </When>
                             <Grid item xs={12}>
                                 <Link href={`mailto:${contact.email}`}>{contact.email}</Link>
                             </Grid>
-                            <Grid item xs={12}>
-                                Phone: <Link href={`tel:${contact.phone_number}`}>{contact.phone_number}</Link>
-                            </Grid>
+                            <When condition={contact.phone_number}>
+                                <Grid item xs={12}>
+                                    Phone: <Link href={`tel:${contact.phone_number}`}>{contact.phone_number}</Link>
+                                </Grid>
+                            </When>
                         </Grid>
                     </Grid>
                 );

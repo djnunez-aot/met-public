@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@mui/material';
 import Dropzone from 'react-dropzone';
-import { SecondaryButton } from 'components/common';
+import { MetParagraph, SecondaryButton } from 'components/common';
 
 interface ImageUploadProps {
     handleAddFile: (_files: File[]) => void;
@@ -85,7 +85,9 @@ const ImageUpload = ({ handleAddFile, savedImageUrl = '' }: ImageUploadProps) =>
                         }}
                     >
                         <input {...getInputProps()} multiple={false} accept={'image/*'} />
-                        <p>Drag 'n' drop some files here, or click to select files</p>
+                        <MetParagraph style={{ fontWeight: 200, padding: '10px' }}>
+                            Drag 'n' drop some files here, or click to select files
+                        </MetParagraph>
                     </Grid>
                 </section>
             )}
