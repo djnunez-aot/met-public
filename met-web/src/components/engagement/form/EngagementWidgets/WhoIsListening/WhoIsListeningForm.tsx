@@ -40,7 +40,7 @@ const WhoIsListeningForm = () => {
         if (alreadyAdded) {
             return;
         }
-
+        //TODO: Turn move added contacts to the who is listening context and update accordingly when post widgetitems is called in addcontactDrawer.tsx
         setAddedContacts([...addedContacts, { ...selectedContact }]);
     };
 
@@ -52,6 +52,7 @@ const WhoIsListeningForm = () => {
             };
         });
         try {
+            console.log('WIDGETS TO UPDATE !!!!!' + JSON.stringify(widgetsToUpdate));
             setSavingWidgetItems(true);
             await postWidgetItems(widget.id, widgetsToUpdate);
             await loadWidgets();

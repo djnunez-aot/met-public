@@ -15,6 +15,9 @@ import { openNotification } from 'services/notificationService/notificationSlice
 import { updatedDiff } from 'deep-object-diff';
 import { WhoIsListeningContext } from './WhoIsListeningContext';
 import { saveDocument } from 'services/objectStorageService';
+import { WidgetDrawerContext } from '../WidgetDrawerContext';
+import { postWidgetItems } from 'services/widgetService';
+import { WidgetType } from 'models/widget';
 
 const schema = yup
     .object({
@@ -33,11 +36,11 @@ const AddContactDrawer = () => {
     const dispatch = useAppDispatch();
     const { addContactDrawerOpen, handleAddContactDrawerOpen, loadContacts, contactToEdit, handleChangeContactToEdit } =
         useContext(WhoIsListeningContext);
-
+    const { widgets } = useContext(WidgetDrawerContext);
     const [isCreatingContact, setIsCreatingContact] = useState(false);
     const [avatarFileName, setAvatarFileName] = useState(contactToEdit?.avatar_filename || '');
     const [avatarImage, setAvatarImage] = useState<File | null>(null);
-
+    const widget = widgets.filter((widget) => widget.widget_type_id === WidgetType.WhoIsListening)[0] || null;
     const methods = useForm<ContactForm>({
         resolver: yupResolver(schema),
     });
@@ -74,11 +77,19 @@ const AddContactDrawer = () => {
                 avatar_filename: uploadedAvatarImageFileName,
             }) as PatchContactRequest;
 
-            await patchContact({
+            const patchedContact = await patchContact({
                 ...contactUpdatesToPatch,
                 id: contactToEdit.id,
             });
-
+            console.log('PATCHED CONTACT ::::::' + JSON.stringify(patchedContact));
+            //TODO: Line 43 Who is Listening Form
+            const updatedWidgetItems = await postWidgetItems(widget.id, [
+                {
+                    widget_id: widget.id,
+                    widget_data_id: patchedContact.id,
+                },
+            ]);
+            console.log(updatedWidgetItems);
             handleChangeContactToEdit(null);
             dispatch(openNotification({ severity: 'success', text: 'Contact was successfully updated' }));
         }
@@ -86,10 +97,23 @@ const AddContactDrawer = () => {
 
     const createContact = async (data: ContactForm) => {
         const uploadedAvatarImageFileName = await handleUploadAvatarImage();
-        await postContact({
+        const newContact = await postContact({
             ...data,
             avatar_filename: uploadedAvatarImageFileName,
         });
+
+        console.log(newContact);
+        console.log({
+            widget_id: widget.id,
+            widget_data_id: newContact.id,
+        });
+        const updatedWidgetItems = await postWidgetItems(widget.id, [
+            {
+                widget_id: widget.id,
+                widget_data_id: newContact.id,
+            },
+        ]);
+        console.log(updatedWidgetItems);
         dispatch(openNotification({ severity: 'success', text: 'A new contact was successfully added' }));
     };
 
