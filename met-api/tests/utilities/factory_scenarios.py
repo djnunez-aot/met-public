@@ -144,6 +144,14 @@ class TestWidgetInfo(dict, Enum):
         'created_date': datetime.now().strftime('%Y-%m-%d'),
         'updated_date': datetime.now().strftime('%Y-%m-%d'),
     }
+    widget2 = {
+        'widget_type_id': WidgetType.DOCUMENTS.value,
+        'engagement_id': 1,
+        'created_by': '123',
+        'updated_by': '123',
+        'created_date': datetime.now().strftime('%Y-%m-%d'),
+        'updated_date': datetime.now().strftime('%Y-%m-%d'),
+    }
 
 
 class TestWidgetItemInfo(dict, Enum):
@@ -207,4 +215,26 @@ class TestCommentInfo(dict, Enum):
         'text': fake.paragraph(nb_sentences=3),
         'component_id': 'simpletextarea',
         'submission_date': datetime.now().strftime('%Y-%m-%d'),
+    }
+
+
+class TestWidgetDocumentInfo(dict, Enum):
+    """Test scenarios of contact."""
+
+    document1 = {
+        'title': fake.word(),
+        'type': 'folder',
+        'parent_document_id': None,
+        'url': None,
+        'sort_index': 1,
+        'widget_id': 1,
+    }
+
+    document2 = {
+        'title': fake.file_name(extension='pdf'),
+        'type': 'file',
+        'parent_document_id': None,
+        'url': fake.image_url(),
+        'sort_index': 1,
+        'widget_id': 1,
     }

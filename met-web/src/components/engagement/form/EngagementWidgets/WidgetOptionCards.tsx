@@ -1,8 +1,9 @@
 import React from 'react';
 import { Divider, Grid } from '@mui/material';
-import WhoIsListeningOptionCard from './WhoIsListeningOptionCard';
-import DocumentOptionCard from './DocumentOptionCard';
+import WhoIsListeningOptionCard from './WhoIsListening/WhoIsListeningOptionCard';
 import { MetHeader3 } from 'components/common';
+import DocumentOptionCard from './Documents/DocumentOptionCard';
+import PhasesOptionCard from './Phases/PhasesOptionCard';
 
 const WidgetOptionCards = () => {
     return (
@@ -16,6 +17,9 @@ const WidgetOptionCards = () => {
             </Grid>
             <Grid item xs={12} lg={6}>
                 <DocumentOptionCard />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+                <PhasesOptionCard />
             </Grid>
         </Grid>
     );

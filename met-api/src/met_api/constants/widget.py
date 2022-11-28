@@ -19,3 +19,5 @@ class WidgetType(IntEnum):
     """Widget types enum."""
 
     WHO_IS_LISTENING = 1
+    DOCUMENTS = 2
+    PHASES = 3
