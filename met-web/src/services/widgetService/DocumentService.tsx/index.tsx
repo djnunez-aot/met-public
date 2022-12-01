@@ -32,3 +32,21 @@ export const postDocument = async (widget_id: number, data: PostDocumentRequest)
         return Promise.reject(err);
     }
 };
+
+interface DeleteDocumentRequest {
+    widget_id?: number;
+    parent_document_id?: number | null;
+}
+
+export const deleteDocument = async (widget_id: number, data: DeleteDocumentRequest): Promise<DocumentItem> => {
+    try {
+        const url = replaceUrl(Endpoints.Documents.DELETE, 'widget_id', String(widget_id));
+        const response = await http.PostRequest<DocumentItem>(url, data);
+        if (response.data.status && response.data.result) {
+            return Promise.resolve(response.data.result);
+        }
+        return Promise.reject(response.data.message ?? 'Failed to create document');
+    } catch (err) {
+        return Promise.reject(err);
+    }
+};

@@ -4,8 +4,32 @@ import { MetWidgetPaper } from 'components/common';
 import { DocumentItem } from 'models/document';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import LinkIcon from '@mui/icons-material/Link';
+import { openNotificationModal } from 'services/notificationModalService/notificationModalSlice';
+import { useAppDispatch } from 'hooks';
+import { deleteDocument } from 'services/widgetService/DocumentService.tsx';
 
 const DocumentFile = ({ documentItem }: { documentItem: DocumentItem }) => {
+    const dispatch = useAppDispatch();
+
+    const removeFile = (documentId: number, documentName: string) => {
+        dispatch(
+            openNotificationModal({
+                open: true,
+                data: {
+                    header: `Remove ${documentName}`,
+                    subText: [
+                        `You will be removing ${documentName} from this engagement.`,
+                        'Do you want to remove this widget?',
+                    ],
+                    handleConfirm: () => {
+                        deleteDocument(documentId);
+                    },
+                },
+                type: 'confirm',
+            }),
+        );
+    };
+
     return (
         <Grid item xs={12} container alignItems="flex-start" justifyContent={'flex-start'} spacing={2} mb={2}>
             <MetWidgetPaper elevation={1} sx={{ width: '100%' }}>
@@ -17,7 +41,12 @@ const DocumentFile = ({ documentItem }: { documentItem: DocumentItem }) => {
                         </Stack>
                     </Grid>
                     <Grid item xs container justifyContent={'flex-end'}>
-                        <IconButton sx={{ padding: 0, margin: 0 }} color="inherit" aria-label="Remove File">
+                        <IconButton
+                            onClick={() => removeFile(documentItem.id, documentItem.title)}
+                            sx={{ padding: 0, margin: 0 }}
+                            color="inherit"
+                            aria-label="Remove File"
+                        >
                             <HighlightOffIcon />
                         </IconButton>
                     </Grid>

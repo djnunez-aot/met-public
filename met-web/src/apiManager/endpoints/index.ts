@@ -57,6 +57,7 @@ const Endpoints = {
     Documents: {
         GET_LIST: `${AppConfig.apiUrl}/widgets/widget_id/documents`,
         CREATE: `${AppConfig.apiUrl}/widgets/widget_id/documents`,
+        DELETE: `${AppConfig.apiUrl}/widgets/widget_id/documents`,
     },
 };
 

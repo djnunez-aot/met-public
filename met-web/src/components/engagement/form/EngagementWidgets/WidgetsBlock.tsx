@@ -53,14 +53,14 @@ const WidgetsBlock = () => {
         });
     };
 
-    const removeWidget = (widgetId: number) => {
+    const removeWidget = (widgetId: number, widgetName: string) => {
         dispatch(
             openNotificationModal({
                 open: true,
                 data: {
-                    header: 'Remove Widget',
+                    header: `Remove ${widgetName}`,
                     subText: [
-                        'You will be removing this widget from the engagement.',
+                        `You will be removing ${widgetName} from this engagement.`,
                         'Do you want to remove this widget?',
                     ],
                     handleConfirm: () => {
