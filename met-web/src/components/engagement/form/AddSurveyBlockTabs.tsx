@@ -54,7 +54,6 @@ const AddSurveyBlockTabs = ({
             if (item.survey_status === value && newState) {
                 item.block_text = newState;
             }
-            return item;
         });
         handleChange(surveyBlockContent);
     };
