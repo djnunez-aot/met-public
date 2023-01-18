@@ -16,7 +16,8 @@ import Edit from '@mui/icons-material/Edit';
 import { DocumentsContext } from './DocumentsContext';
 import { updatedDiff } from 'deep-object-diff';
 import { openNotification } from 'services/notificationService/notificationSlice';
-
+import { MetDroppable, MetDraggable } from 'components/common/Dragdrop';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 const DocumentFolder = ({ documentItem }: { documentItem: DocumentItem }) => {
     const dispatch = useAppDispatch();
     const { documents, loadDocuments } = useContext(DocumentsContext);
@@ -61,6 +62,7 @@ const DocumentFolder = ({ documentItem }: { documentItem: DocumentItem }) => {
                 <Grid container direction="row" alignItems={'center'} justifyContent="flex-start">
                     <Grid item xs>
                         <Stack spacing={2} direction="row" alignItems="center">
+                            <DragIndicatorIcon color="info" />
                             <FolderIcon color="info" />
                             <If condition={!edit}>
                                 <Then>
@@ -125,26 +127,30 @@ const DocumentFolder = ({ documentItem }: { documentItem: DocumentItem }) => {
                 </Grid>
             </MetWidgetPaper>
             <When condition={documentItem.children && documentItem.children.length > 0}>
-                <Grid item xs={12} container justifyContent={'flex-end'} spacing={2}>
-                    {documentItem.children?.map((item) => {
-                        return (
-                            <Grid key={`child-document-${item.id}`} item xs={12}>
-                                <Stack direction="row" spacing={1} alignItems="flex-start">
-                                    <IconButton
-                                        sx={{ padding: 0, margin: 0, height: '2em' }}
-                                        style={{ color: 'inherit' }}
-                                        color="inherit"
-                                        aria-label="drag-indicator"
-                                        disabled={true}
-                                    >
-                                        <SubdirectoryArrowRightIcon />
-                                    </IconButton>
-                                    <DocumentSwitch documentItem={item} />
-                                </Stack>
-                            </Grid>
-                        );
-                    })}
-                </Grid>
+                <MetDroppable droppableId={`droppable-${documentItem.title}`}>
+                    <Grid item xs={12} container justifyContent={'flex-end'} spacing={2}>
+                        {documentItem.children?.map((item, index) => {
+                            return (
+                                <Grid key={`child-document-${item.id}`} item xs={12}>
+                                    <Stack direction="row" spacing={1} alignItems="flex-start">
+                                        <IconButton
+                                            sx={{ padding: 0, margin: 0, height: '2em' }}
+                                            style={{ color: 'inherit' }}
+                                            color="inherit"
+                                            aria-label="drag-indicator"
+                                            disabled={true}
+                                        >
+                                            <SubdirectoryArrowRightIcon />
+                                        </IconButton>
+                                        <MetDraggable draggableId={String(documentItem.id)} index={index}>
+                                            <DocumentSwitch documentItem={item} />
+                                        </MetDraggable>
+                                    </Stack>
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                </MetDroppable>
             </When>
         </Grid>
     );

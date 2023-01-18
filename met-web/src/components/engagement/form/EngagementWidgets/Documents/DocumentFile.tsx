@@ -11,6 +11,7 @@ import { WidgetDrawerContext } from '../WidgetDrawerContext';
 import { WidgetType, Widget } from 'models/widget';
 import Edit from '@mui/icons-material/Edit';
 import { DocumentsContext } from './DocumentsContext';
+import { MetDraggable } from 'components/common/Dragdrop';
 
 const DocumentFile = ({ documentItem }: { documentItem: DocumentItem }) => {
     const dispatch = useAppDispatch();

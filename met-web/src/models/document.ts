@@ -12,4 +12,5 @@ export interface DocumentItem {
     url?: string;
     parent_document_id?: number;
     children?: DocumentItem[];
+    dragIndex?: number;
 }
