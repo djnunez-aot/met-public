@@ -3,15 +3,7 @@ import * as React from 'react';
 import { MetHeader4, MetBody } from 'components/common';
 import { ReactComponent as BCLogo } from 'assets/images/BritishColumbiaLogoLight.svg';
 
-export default function EmailPreview({
-    engagement_name,
-    children,
-    ...rest
-}: {
-    engagement_name: string;
-    children: React.ReactNode;
-    [prop: string]: unknown;
-}) {
+export default function EmailPreview({ children, ...rest }: { children: React.ReactNode; [prop: string]: unknown }) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Box style={container}>
@@ -28,7 +20,7 @@ export default function EmailPreview({
                 </Stack>
                 <Grid item xs={12}>
                     <MetHeader4 sx={{ mb: 1 }}>
-                        Thank you for taking the time to fill in our survey about {engagement_name}.
+                        Thank you for taking the time to fill in our survey about (project name).
                     </MetHeader4>
                 </Grid>
                 {children}

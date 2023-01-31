@@ -35,7 +35,6 @@ import { If, Then, Else, When } from 'react-if';
 import EmailPreviewModal from './emailPreview/EmailPreviewModal';
 import { RejectEmailTemplate } from './emailPreview/EmailTemplates';
 import EmailPreview from './emailPreview/EmailPreview';
-import { getEngagement } from 'services/engagementService';
 
 const CommentReview = () => {
     const [submission, setSubmission] = useState<SurveySubmission>(createDefaultSubmission());
@@ -52,7 +51,6 @@ const CommentReview = () => {
     const [staffNote, setStaffNote] = useState<StaffNote[]>([]);
     const [updatedStaffNote, setUpdatedStaffNote] = useState<StaffNote[]>([]);
     const [openEmailPreview, setEmailPreview] = useState(false);
-    const [engagement, setEngagement] = useState(false);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { submissionId } = useParams();
@@ -61,7 +59,7 @@ const CommentReview = () => {
 
     const getEmailPreview = () => {
         return (
-            <EmailPreview engagement_name={engagement.engagement_name}>
+            <EmailPreview>
                 <When condition={review == CommentStatus.Rejected}>
                     <RejectEmailTemplate
                         hasPersonalInfo={hasPersonalInfo}
@@ -84,8 +82,6 @@ const CommentReview = () => {
 
             const fetchedSubmission = await getSubmission(Number(submissionId));
             setSubmission(fetchedSubmission);
-            const fetchedEngagement = await getEngagement(submission.engagement_id);
-            setEngagement(fetchedEngagement);
             setHasOtherReason(!!fetchedSubmission.rejected_reason_other);
             setOtherReason(fetchedSubmission.rejected_reason_other ?? '');
             setHasPersonalInfo(fetchedSubmission.has_personal_info ?? false);
@@ -481,9 +477,7 @@ const CommentReview = () => {
                                 <PrimaryButton loading={isSaving} onClick={handleSave}>
                                     {'Save & Continue'}
                                 </PrimaryButton>
-                                <When condition={review == CommentStatus.Rejected && notifyEmail && !hasThreat}>
-                                    <SecondaryButton onClick={previewEmail}>{'Preview Email'}</SecondaryButton>
-                                </When>
+                                <SecondaryButton onClick={previewEmail}>{'Preview Email'}</SecondaryButton>
                                 <SecondaryButton onClick={() => navigate(-1)}>Cancel</SecondaryButton>
                             </Stack>
                         </Grid>
