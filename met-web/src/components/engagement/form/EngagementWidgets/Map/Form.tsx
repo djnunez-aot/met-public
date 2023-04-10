@@ -21,10 +21,11 @@ import { postMap, previewShapeFile } from 'services/widgetService/MapService';
 import { WidgetDrawerContext } from '../WidgetDrawerContext';
 import FileUpload from 'components/common/FileUpload/FileUpload';
 import { geoJSONDecode } from './utils';
-import { GeoJSON } from 'geojson';
+import { GeoJSON, Feature } from 'geojson';
 import LinkIcon from '@mui/icons-material/Link';
 import { When } from 'react-if';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import * as turf from '@turf/turf';
 
 const schema = yup
     .object({
@@ -118,7 +119,7 @@ const Form = () => {
     const handlePreviewMap = async () => {
         const valid = await trigger(['latitude', 'longitude', 'markerLabel', 'shapefile']);
         const validatedData = await schema.validate({ latitude, longitude, markerLabel, geojson, shapefile });
-        let previewGeoJson: GeoJSON | undefined;
+        let previewGeoJson: turf.AllGeoJSON | GeoJSON | undefined;
         if (!valid) {
             return;
         }
@@ -137,8 +138,15 @@ const Form = () => {
     };
 
     const handleAddFile = async (files: File[]) => {
+        let previewGeoJson: turf.AllGeoJSON | GeoJSON | undefined;
         if (files.length > 0) {
             methods.setValue('shapefile', files[0]);
+            previewGeoJson = await previewShapeFile({
+                file: files[0],
+            });
+            const centerPoint: Feature = turf.center(previewGeoJson);
+            methods.setValue('longitude', centerPoint.geometry.coordinates[0]);
+            methods.setValue('latitude', centerPoint.geometry.coordinates[1]);
             return;
         }
         methods.setValue('shapefile', undefined);
