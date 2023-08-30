@@ -1,3 +1,13 @@
 .rdw-option-active {
-    box-shadow: 1px 1px 0px #BFBDBD inset !important;
-  }
+    box-shadow: 1px 1px 0px #bfbdbd inset !important;
+}
+
+.public-DraftStyleDefault-ul {
+    line-height: 1; /* Adjusts the line height to make it single spaced */
+    margin: 0; /* Removes default margin */
+}
+
+.public-DraftStyleDefault-ol {
+    line-height: 1; /* Adjusts the line height to make it single spaced */
+    margin: 0; /* Removes default margin */
+}
